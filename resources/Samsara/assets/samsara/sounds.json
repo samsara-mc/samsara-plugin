@@ -1,0 +1,8 @@
+{
+  "ambient.birth.room": {
+    "category": "ambient",
+    "sounds": [
+      "samsara:ambient/birth/room1"
+    ]
+  }
+}
