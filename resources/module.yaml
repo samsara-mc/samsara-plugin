@@ -1,0 +1,13 @@
+#name: ${project.name}
+#version: ${project.version}
+#description: Skips the night when a percentage of players are sleeping
+
+#author: mia.cx
+#website: https://github.com/miadotcx/Sleepercentage
+
+main: ${project.groupId}.${project.artifactId}.${project.name}
+
+#permissions:
+#  sleepercentage.exempt:
+#    description: Exempts the player from the sleep check
+#    default: op
