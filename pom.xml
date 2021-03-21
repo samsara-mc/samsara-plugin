@@ -4,26 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cx.mia</groupId>
+    <name>Samsara</name>
+    <url>https://github.com/miadotcx/Samsara</url>
+
+    <groupId>cx.mia.moda.</groupId>
     <artifactId>Samsara</artifactId>
     <version>alpha</version>
 
     <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.11</jdk.version>
-        <app.main.class>cx.mia.samsara.Main</app.main.class>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <build>
+        <finalName>${project.name}</finalName>
         <sourceDirectory>src</sourceDirectory>
-        <finalName>Samsara</finalName>
 
         <resources>
             <resource>
-                <directory>config</directory>
-                <includes>
-                    <include>*</include>
-                </includes>
+                <directory>resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -34,8 +35,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
@@ -46,27 +48,30 @@
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <minimizeJar>true</minimizeJar>
-                    <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"></transformer>
-                        <manifestEntries>
-                            <Main-Class>${app.main.class}</Main-Class>
-                            <X-Compile-Source-JDK>${jdk.version}</X-Compile-Source-JDK>
-                            <X-Compile-Target-JDK>${jdk.version}</X-Compile-Target-JDK>
-                        </manifestEntries>
-                    </transformers>
+
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>cx.mia.samsara.lib.bstats</shadedPattern>
+                            <shadedPattern>cx.moda.module.samsara.lib.org.bstats</shadedPattern>
                         </relocation>
                     </relocations>
+
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/LICENSE.txt</exclude>
+                                <exclude>META-INF/NOTICE.txt</exclude>
+                                <exclude>META-INF/maven/</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -74,15 +79,19 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>cx.moda</groupId>
+            <artifactId>moda</artifactId>
+            <version>alpha</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
-
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-
     </repositories>
 
 </project>
