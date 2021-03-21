@@ -7,8 +7,8 @@
     <name>Samsara</name>
     <url>https://github.com/miadotcx/Samsara</url>
 
-    <groupId>cx.mia.moda.</groupId>
-    <artifactId>Samsara</artifactId>
+    <groupId>cx.mia</groupId>
+    <artifactId>samsara</artifactId>
     <version>alpha</version>
 
     <properties>
@@ -35,8 +35,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
