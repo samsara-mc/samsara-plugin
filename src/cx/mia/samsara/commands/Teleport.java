@@ -1,5 +1,6 @@
 package cx.mia.samsara.commands;
 
+import cx.mia.samsara.Samsara;
 import cx.moda.moda.module.Module;
 import cx.moda.moda.module.command.ModuleCommandExecutor;
 import org.bukkit.Bukkit;
@@ -52,9 +53,11 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
             Player target = Bukkit.getPlayer(args[0]);
 
             Vector targetVelocity = target.getVelocity();
+            Samsara.getInstance().getLogger().debug("target falling speed of " + targetVelocity.getY());
 
             source.teleport(target);
             source.setVelocity(targetVelocity);
+            Samsara.getInstance().getLogger().debug("falling at a speed of " + source.getVelocity().getY());
 
             source.sendMessage(ChatColor.GREEN + "You were teleported to " + target.getName());
             target.sendMessage(ChatColor.GOLD + source.getName() + " teleported to you.");
@@ -165,7 +168,12 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
                 }
             } else {
                 target = Bukkit.getPlayer(args[0]);
-                sourceLocation = target.getLocation();
+                if (sender instanceof BlockCommandSender) {
+                    BlockCommandSender source = (BlockCommandSender) sender;
+                    sourceLocation = source.getBlock().getLocation();
+                } else {
+                    sourceLocation = target.getLocation();
+                }
             }
 
             if (target == null) {
