@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import cx.mia.samsara.Samsara;
-import cx.mia.samsara.api.entity.listeners.RoomEnterListener;
 import xyz.derkades.derkutils.bukkit.LocationUtils;
 
 public class Room implements Listener {
