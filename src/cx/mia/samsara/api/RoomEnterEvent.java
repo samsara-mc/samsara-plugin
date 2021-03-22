@@ -1,5 +1,6 @@
 package cx.mia.samsara.api;
 
+import cx.mia.samsara.Samsara;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -7,21 +8,22 @@ import org.bukkit.event.HandlerList;
 public class RoomEnterEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
-    private final Player player;
     private final Room room;
+    private final Player player;
 
-    public RoomEnterEvent(Player player, Room room) {
-        this.player = player;
+    public RoomEnterEvent(Room room, Player player) {
         this.room = room;
-        System.out.println("RoomEnterEvent called for room: " + room.getName());
-    }
+        this.player = player;
 
-    public Player getPlayer() {
-        return this.player;
+        Samsara.getInstance().getLogger().debug("RoomEnterEvent called in room " + getRoom().getName() + " by " + getPlayer().getName());
     }
 
     public Room getRoom() {
         return this.room;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 
     public HandlerList getHandlers() {
