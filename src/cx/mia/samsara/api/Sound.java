@@ -19,6 +19,8 @@ public enum Sound {
     GENESIS_EMERGENCE   ("samsara:genesis.emergence",   true,   SoundCategory.VOICE,    Duration.ofSeconds(216)),
     GENESIS_INCEPTION   ("samsara:genesis.inception",   true,   SoundCategory.VOICE,    Duration.ofSeconds(120)),
     GENESIS_INCEPTION2  ("samsara:genesis.inception2",  true,   SoundCategory.VOICE,    Duration.ofSeconds(152)),
+    LIFE                ("samsara:life",                true,   SoundCategory.VOICE,    Duration.ofSeconds(66, 780000000)),
+    LIFE2               ("samsara:life2",               true,   SoundCategory.VOICE,    Duration.ofSeconds(66, 780000000)),
     LIFE_ADULTHOOD      ("samsara:life.adulthood",      true,   SoundCategory.VOICE,    Duration.ofSeconds(57, 600000000)),
     LIFE_ELDER          ("samsara:life.elder",          true,   SoundCategory.VOICE,    Duration.ofSeconds(57, 600000000)),
     LIFE_INFANCY        ("samsara:life.infancy",        true,   SoundCategory.VOICE,    Duration.ofSeconds(60, 631587000)),
