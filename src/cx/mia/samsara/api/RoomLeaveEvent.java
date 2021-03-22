@@ -1,17 +1,19 @@
 package cx.mia.samsara.api;
 
-import cx.mia.samsara.Samsara;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import cx.mia.samsara.Samsara;
+
+@Deprecated
 public class RoomLeaveEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
     private final Room room;
     private final Player player;
 
-    public RoomLeaveEvent(Room room, Player player) {
+    public RoomLeaveEvent(final Room room, final Player player) {
         this.room = room;
         this.player = player;
 
@@ -26,7 +28,8 @@ public class RoomLeaveEvent extends Event {
         return this.player;
     }
 
-    public HandlerList getHandlers() {
+    @Override
+	public HandlerList getHandlers() {
         return handlers;
     }
 
