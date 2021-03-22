@@ -9,11 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 
-import cx.mia.samsara.api.JoinQuitListener;
 import cx.mia.samsara.api.Room;
 import cx.mia.samsara.api.Sound;
+import cx.mia.samsara.api.entity.listeners.DamageListener;
+import cx.mia.samsara.api.entity.listeners.JoinQuitListener;
 import cx.mia.samsara.commands.Teleport;
-import cx.mia.samsara.listeners.DamageListener;
 import cx.mia.samsara.listeners.PlayerRoomListener;
 import cx.mia.samsara.storage.SamsaraStorageHandler;
 import cx.moda.moda.module.Module;
