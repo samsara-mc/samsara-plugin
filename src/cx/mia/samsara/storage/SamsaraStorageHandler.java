@@ -4,6 +4,4 @@ import cx.moda.moda.module.storage.ModuleStorageHandler;
 
 public interface SamsaraStorageHandler extends ModuleStorageHandler {
 
-
-
 }
