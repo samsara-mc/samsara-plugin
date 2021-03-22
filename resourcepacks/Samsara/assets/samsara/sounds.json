@@ -47,6 +47,18 @@
       "samsara:life_elder"
     ]
   },
+  "life": {
+    "category": "voice",
+    "sounds": [
+      "samsara:life"
+    ]
+  },
+  "life2": {
+    "category": "voice",
+    "sounds": [
+      "samsara:life2"
+    ]
+  },
   "life.infancy": {
     "category": "voice",
     "sounds": [
