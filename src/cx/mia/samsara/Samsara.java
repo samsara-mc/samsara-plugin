@@ -3,6 +3,7 @@ package cx.mia.samsara;
 import cx.mia.samsara.api.JoinQuitListener;
 import cx.mia.samsara.api.Room;
 import cx.mia.samsara.api.Sound;
+import cx.mia.samsara.commands.Teleport;
 import cx.moda.moda.module.Module;
 import cx.mia.samsara.storage.SamsaraStorageHandler;
 import cx.moda.moda.module.command.ModuleCommandBuilder;
@@ -27,22 +28,12 @@ public class Samsara extends Module<SamsaraStorageHandler> {
     @Override
     public void onEnable() {
 
-        // register all rooms
-        registerRooms(Bukkit.getWorld("worlds/sid"));
+        registerListeners(Bukkit.getWorld("worlds/sid"));
+        registerCommands();
         registerListener(new JoinQuitListener());
 
-        CommandExecutor executor = (sender, command, label, args) -> {
-            if (!sender.hasPermission("samsara.listworlds")) return false;
+        getLogger().debug("Finished enabling.");
 
-            Bukkit.getWorlds().forEach(world -> sender.sendMessage(world.getName()));
-            return true;
-        };
-
-        new ModuleCommandBuilder("listworlds")
-                .withExecutor(executor)
-                .withPermission("samsara.listworlds")
-                .withAliases("world", "worlds")
-                .register(this);
     }
 
     /**
@@ -69,6 +60,40 @@ public class Samsara extends Module<SamsaraStorageHandler> {
                         Sound.LIFE_INFANCY2
                 )
         );
+    }
+
+    /**
+     * register all commands
+     */
+    private void registerCommands() {
+
+        CommandExecutor executor = (sender, command, label, args) -> {
+            if (!sender.hasPermission("samsara.listworlds")) return false;
+
+            Bukkit.getWorlds().forEach(world -> sender.sendMessage(world.getName()));
+            return true;
+        };
+
+        new ModuleCommandBuilder("listworlds")
+                .withExecutor(executor)
+                .withPermission("samsara.listworlds")
+                .withAliases("world", "worlds")
+                .register(this);
+
+        getLogger().debug("registered listworlds command");
+
+        new ModuleCommandBuilder("teleport")
+                .withExecutor(new Teleport(this))
+                .withPermission("samsara.teleport")
+                .withAliases("tp")
+                .register(this);
+    }
+
+    /**
+     * register all listeners
+     */
+    private void registerListeners(World world) {
+        registerRooms(world);
     }
 
     public static Samsara getInstance() {
