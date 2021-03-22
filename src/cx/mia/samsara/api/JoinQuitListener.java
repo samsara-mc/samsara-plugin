@@ -18,10 +18,11 @@ public class JoinQuitListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Sound.getLoopers().put(player, new HashMap<>());
-        Samsara.getInstance().getLogger().debug(player.getName() + " was added to the Looper HashMap");
+        Samsara.getInstance().getLogger().debug(player.getName() + " joined with gamemode " + player.getGameMode());
         if (!player.getGameMode().equals(GameMode.CREATIVE)) {
-            event.getPlayer().teleport(new Location(Bukkit.getWorld("worlds/sid"), 256, 180, 81));
+            player.teleport(new Location(Bukkit.getWorld("worlds/sid"), 256, 180, 81));
         }
+        Samsara.getInstance().getLogger().debug(player.getName() + " was added to the Looper HashMap");
     }
 
     @EventHandler
