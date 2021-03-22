@@ -1,23 +1,110 @@
 package cx.mia.samsara;
 
-import cx.mia.samsara.api.entity.listeners.JoinQuitListener;
-import cx.mia.samsara.api.Room;
-import cx.mia.samsara.api.Sound;
-import cx.mia.samsara.commands.Teleport;
-import cx.mia.samsara.api.entity.listeners.DamageListener;
-import cx.moda.moda.module.Module;
-import cx.mia.samsara.storage.SamsaraStorageHandler;
-import cx.moda.moda.module.command.ModuleCommandBuilder;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 
-import java.util.HashMap;
+import cx.mia.samsara.api.Room;
+import cx.mia.samsara.api.Sound;
+import cx.mia.samsara.api.entity.listeners.DamageListener;
+import cx.mia.samsara.api.entity.listeners.JoinQuitListener;
+import cx.mia.samsara.commands.Teleport;
+import cx.mia.samsara.listeners.PlayerRoomListener;
+import cx.mia.samsara.storage.SamsaraStorageHandler;
+import cx.moda.moda.module.Module;
+import cx.moda.moda.module.command.ModuleCommandBuilder;
 
 public class Samsara extends Module<SamsaraStorageHandler> {
 
     private static Samsara instance;
+
+    private static final World WORLD = Bukkit.getWorld("worlds/sid");
+
+    public static final Room[] ROOMS = {
+    		new Room(
+                    "start room",
+                    new Location(WORLD, 273, 172, 84),
+                    new Location(WORLD, 176, 221, -12),
+                    List.of(Sound.GENESIS_INCEPTION2)
+            ),
+    		new Room(
+                    "life main",
+                    new Location(WORLD, 166, 94, 203),
+                    new Location(WORLD, 214, 64, 173),
+                    List.of(Sound.LIFE)
+            ),
+    		new Room(
+                    "mirror room",
+                    new Location(WORLD, 270, 186, 84),
+                    new Location(WORLD, 249, 180, 74),
+                    List.of(Sound.GENESIS_INCEPTION)
+            ),
+    		new Room(
+                    "falling tube",
+                    new Location(WORLD, 222, 253, 34),
+                    new Location(WORLD, 224, 120, 36),
+                    List.of(Sound.GENESIS_EMERGENCE)
+            ),
+    		new Room(
+                    "walk toward life",
+                    new Location(WORLD, 99, 227, 86),
+                    new Location(WORLD, 2, 130, -71),
+                    List.of(Sound.GENESIS_BIRTH)
+            ),
+    		 new Room(
+                     "life spawn room",
+                     new Location(WORLD, 259, 76, 221),
+                     new Location(WORLD, 233, 63, 198),
+                     List.of(Sound.LIFE_INFANCY)
+             ),
+    		 new Room(
+                     "dark inverted pyramic",
+                     new Location(WORLD, 309, 169, -14),
+                     new Location(WORLD, 399, 116, 75),
+                     List.of(Sound.LIFE_INFANCY2)
+             ),
+    		 new Room(
+                     "think twice",
+                     new Location(WORLD, 170, 88, 178),
+                     new Location(WORLD, 168, 90, 180),
+                     List.of(Sound.DEATH_SHORT)
+             ),
+    		 new Room(
+                     "bridge",
+                     new Location(WORLD, 208, 72, 190),
+                     new Location(WORLD, 227, 82, 158),
+                     List.of(Sound.LIFE_ADULTHOOD)
+             ),
+    		 new Room(
+                     "the pit",
+                     new Location(WORLD, 227, 81, 157),
+                     new Location(WORLD, 223, 2, 1154),
+                     List.of(Sound.LIFE_ELDER)
+             ),
+    		 new Room(
+                     "regeneration",
+                     new Location(WORLD, 173, 47, 123),
+                     new Location(WORLD, 83, 58, 32),
+                     List.of(Sound.REGENERATION)
+             ),
+    		 new Room(
+                     "home",
+                     new Location(WORLD, 700, 63, 542),
+                     new Location(WORLD, 714, 78, 551),
+                     List.of(Sound.LIFE_INFANCY)
+             ),
+    		 new Room(
+                     "farm",
+                     new Location(WORLD, 747, 60, 615),
+                     new Location(WORLD, 604, 96, 468),
+                     List.of(Sound.LIFE_INFANCY2)
+             ),
+    };
 
     public Samsara() {
         instance = this;
@@ -35,7 +122,7 @@ public class Samsara extends Module<SamsaraStorageHandler> {
             Sound.getLoopers().put(player, new HashMap<>());
         });
 
-        registerListeners(Bukkit.getWorld("worlds/sid"));
+        registerListeners();
         registerCommands();
         registerListener(new JoinQuitListener());
 
@@ -44,139 +131,14 @@ public class Samsara extends Module<SamsaraStorageHandler> {
     }
 
     /**
-     * regsiters all rooms
-     *
-     * @param world the world to look for locations of the rooms in.
-     */
-    private void registerRooms(World world) {
-
-
-
-        registerListener(
-                new Room(
-                        "start room",
-                        new Location(world, 273, 172, 84),
-                        new Location(world, 176, 221, -12),
-                        Sound.GENESIS_INCEPTION2
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "life main",
-                        new Location(world, 166, 94, 203),
-                        new Location(world, 214, 64, 173),
-                        Sound.LIFE
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "mirror room",
-                        new Location(world, 270, 186, 84),
-                        new Location(world, 249, 180, 74),
-                        Sound.GENESIS_INCEPTION
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "falling tube",
-                        new Location(world, 222, 253, 34),
-                        new Location(world, 224, 120, 36),
-                        Sound.GENESIS_EMERGENCE
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "walk toward life",
-                        new Location(world, 99, 227, 86),
-                        new Location(world, 2, 130, -71),
-                        Sound.GENESIS_BIRTH
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "life spawn room",
-                        new Location(world, 259, 76, 221),
-                        new Location(world, 233, 63, 198),
-                        Sound.LIFE_INFANCY
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "dark inverted pyramic",
-                        new Location(world, 309, 169, -14),
-                        new Location(world, 399, 116, 75),
-                        Sound.LIFE_INFANCY2
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "think twice",
-                        new Location(world, 170, 88, 178),
-                        new Location(world, 168, 90, 180),
-                        Sound.DEATH_SHORT
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "bridge",
-                        new Location(world, 208, 72, 190),
-                        new Location(world, 227, 82, 158),
-                        Sound.LIFE_ADULTHOOD
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "the pit",
-                        new Location(world, 227, 81, 157),
-                        new Location(world, 223, 2, 1154),
-                        Sound.LIFE_ELDER
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "regeneration",
-                        new Location(world, 173, 47, 123),
-                        new Location(world, 83, 58, 32),
-                        Sound.REGENERATION
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "home",
-                        new Location(world, 700, 63, 542),
-                        new Location(world, 714, 78, 551),
-                        Sound.LIFE_INFANCY
-                )
-        );
-
-        registerListener(
-                new Room(
-                        "farm",
-                        new Location(world, 747, 60, 615),
-                        new Location(world, 604, 96, 468),
-                        Sound.LIFE_INFANCY2
-                )
-        );
-    }
-
-    /**
      * register all commands
      */
     private void registerCommands() {
 
-        CommandExecutor executor = (sender, command, label, args) -> {
-            if (!sender.hasPermission("samsara.listworlds")) return false;
+        final CommandExecutor executor = (sender, command, label, args) -> {
+            if (!sender.hasPermission("samsara.listworlds")) {
+				return false;
+			}
 
             Bukkit.getWorlds().forEach(world -> sender.sendMessage(world.getName()));
             return true;
@@ -200,9 +162,10 @@ public class Samsara extends Module<SamsaraStorageHandler> {
     /**
      * register all listeners
      */
-    private void registerListeners(World world) {
+    private void registerListeners() {
         registerListener(new DamageListener());
-        registerRooms(world);
+        registerListener(new PlayerRoomListener());
+        Arrays.stream(ROOMS).forEach(this::registerListener);
     }
 
     public static Samsara getInstance() {
