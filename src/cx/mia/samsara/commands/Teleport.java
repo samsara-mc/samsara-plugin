@@ -160,7 +160,7 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
                 double lastDistance = Double.MAX_VALUE;
 
                 for (Player player : sourceLocation.getWorld().getPlayers()) {
-                    double distance = player.getLocation().distance(player.getLocation());
+                    double distance = sourceLocation.distance(player.getLocation());
                     if(distance < lastDistance) {
                         lastDistance = distance;
                         target = player;
