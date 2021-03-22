@@ -1,17 +1,16 @@
 package cx.mia.samsara.api;
 
+import cx.mia.samsara.Samsara;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import xyz.derkades.derkutils.bukkit.LocationUtils;
 
 public class RoomEnterListener implements Listener {
 
-    private Room room;
+    private final Room room;
 
     public RoomEnterListener(Room room) {
         this.room = room;
@@ -21,16 +20,17 @@ public class RoomEnterListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if (room.getPlayers().contains(player)) return;
+        if (!room.getPlayers().contains(player)) {
+            if (room.playerInsideRoom(player)) {
+                RoomEnterEvent roomEnterEvent = new RoomEnterEvent(getRoom(), player);
 
-        if (room.playerInsideRoom(player)) {
-            RoomEnterEvent roomEnterEvent = new RoomEnterEvent(player, room);
-
-            room.onRoomEnter(roomEnterEvent);
-
-            Bukkit.getServer().getPluginManager().callEvent(roomEnterEvent);
+                Bukkit.getPluginManager().callEvent(roomEnterEvent);
+                Samsara.getInstance().getLogger().debug(player.getName() + " entered room " + getRoom().getName() + " and a RoomEnterEvent was called.");
+            }
         }
+    }
 
-
+    public Room getRoom() {
+        return room;
     }
 }
