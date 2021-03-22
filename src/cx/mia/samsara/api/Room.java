@@ -1,6 +1,10 @@
 package cx.mia.samsara.api;
 
 import cx.mia.samsara.Samsara;
+import cx.mia.samsara.api.entity.RoomEnterEvent;
+import cx.mia.samsara.api.entity.listeners.RoomEnterListener;
+import cx.mia.samsara.api.entity.RoomLeaveEvent;
+import cx.mia.samsara.api.entity.listeners.RoomLeaveListener;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +30,7 @@ public class Room implements Listener {
      * @param name   name of the room
      * @param c1     first corner of the room (cuboid)
      * @param c2     second corner of the room (cuboid)
-     * @param sounds a list of sounds sound associated with this room (these will play when entering the room, see {@link cx.mia.samsara.api.RoomEnterListener})
+     * @param sounds a list of sounds sound associated with this room (these will play when entering the room, see {@link RoomEnterListener})
      */
     public Room(String name, Location c1, Location c2, Sound... sounds) {
 

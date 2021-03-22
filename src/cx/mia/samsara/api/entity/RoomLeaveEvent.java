@@ -1,6 +1,7 @@
-package cx.mia.samsara.api;
+package cx.mia.samsara.api.entity;
 
 import cx.mia.samsara.Samsara;
+import cx.mia.samsara.api.Room;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

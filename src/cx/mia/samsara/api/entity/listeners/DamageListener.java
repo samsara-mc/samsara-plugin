@@ -1,5 +1,7 @@
-package cx.mia.samsara.listeners;
+package cx.mia.samsara.api.entity.listeners;
 
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -10,7 +12,11 @@ public class DamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent event){
-        event.setCancelled(true);
+        if (event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand) {
+            if (!event.getCause().equals(EntityDamageEvent.DamageCause.CUSTOM) && !event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE)) {
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
