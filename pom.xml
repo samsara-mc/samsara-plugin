@@ -52,7 +52,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>cx.moda.module.samsara.lib.org.bstats</shadedPattern>
+                            <shadedPattern>cx.mia.samsara.lib.org.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>xyz.derkades.derkutils</pattern>
+                            <shadedPattern>cx.mia.samsara.lib.xyz.derkades.derkutils</shadedPattern>
                         </relocation>
                     </relocations>
 
@@ -84,6 +88,12 @@
             <artifactId>moda</artifactId>
             <version>alpha</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.derkades</groupId>
+            <artifactId>Derkutils</artifactId>
+            <version>master</version>
         </dependency>
     </dependencies>
 
