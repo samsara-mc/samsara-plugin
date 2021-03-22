@@ -1,4 +1,10 @@
 {
+  "death": {
+    "category": "voice",
+    "sounds": [
+      "samsara:death"
+    ]
+  },
   "death.short": {
     "category": "voice",
     "sounds": [
