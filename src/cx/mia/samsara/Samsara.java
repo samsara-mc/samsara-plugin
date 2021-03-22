@@ -12,6 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 
+import java.util.HashMap;
+
 public class Samsara extends Module<SamsaraStorageHandler> {
 
     private static Samsara instance;
@@ -27,6 +29,10 @@ public class Samsara extends Module<SamsaraStorageHandler> {
 
     @Override
     public void onEnable() {
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            Sound.getLoopers().put(player, new HashMap<>());
+        });
 
         registerListeners(Bukkit.getWorld("worlds/sid"));
         registerCommands();
