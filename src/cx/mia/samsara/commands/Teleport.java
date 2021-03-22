@@ -6,9 +6,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.CommandBlock;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -95,6 +99,7 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
             }
 
             Player source = (Player) sender;
+            Location sourceLocation = source.getLocation();
 
             Vector targetVelocity = source.getVelocity();
 
@@ -108,7 +113,9 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
                             parseDouble(args[1]),
                     args[2].startsWith("~") ?
                             source.getLocation().getZ() + parseDouble(args[2].replace("~", "")) :
-                            parseDouble(args[2]));
+                            parseDouble(args[2]),
+                    sourceLocation.getYaw(),
+                    sourceLocation.getPitch());
 
             source.teleport(targetLocation);
             source.setVelocity(targetVelocity);
@@ -122,49 +129,93 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
 
         if (args.length == 4) {
 
-            if (Bukkit.getPlayer(args[0]) == null) {
+
+            if (Bukkit.getPlayer(args[0]) == null && !args[0].equals("@p")) {
                 sender.sendMessage(ChatColor.RED + "Could not find target.");
                 return false;
             }
 
-            if (!isDouble(args[1]) || !isDouble(args[2]) || !isDouble(args[3])) {
+            if (    (!isDouble(args[1]) && !args[1].startsWith("~")) ||
+                    (!isDouble(args[2]) && !args[2].startsWith("~")) ||
+                    (!isDouble(args[3]) && !args[3].startsWith("~"))) {
                 sender.sendMessage(ChatColor.RED + "Please provide valid coordinates.");
                 return false;
             }
 
-            Player source = Bukkit.getPlayer(args[0]);
+            Location sourceLocation = null;
 
-            Vector targetVelocity = source.getVelocity();
+            Player target;
+
+            if (sender instanceof BlockCommandSender) {
+                BlockCommandSender source = (BlockCommandSender) sender;
+                sourceLocation = source.getBlock().getLocation();
+            } else if (sender instanceof Entity) {
+                Entity source = (Entity) sender;
+                sourceLocation = source.getLocation();
+            }
+
+            if (!args[0].equals("@p")) {
+                target = Bukkit.getPlayer(args[0]);
+            }
+
+            if (args[0].equals("@p") && sourceLocation != null) {
+
+                target = null;
+                double lastDistance = Double.MAX_VALUE;
+
+                for (Player player : sourceLocation.getWorld().getPlayers()) {
+                    double distance = player.getLocation().distance(player.getLocation());
+                    if(distance < lastDistance) {
+                        lastDistance = distance;
+                        target = player;
+                    }
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "You must have a location to use this selector.");
+                return false;
+            }
+
+            sourceLocation.setYaw(target.getLocation().getYaw());
+            sourceLocation.setPitch(target.getLocation().getPitch());
+
+            Vector targetVelocity = target.getVelocity();
 
             Location targetLocation = new Location(
-                    source.getWorld(),
+                    sourceLocation.getWorld(),
                     args[1].startsWith("~") ?
-                            source.getLocation().getX() + parseDouble(args[1].replace("~", "")) :
+                            sourceLocation.getX() + parseDouble(args[1].replace("~", "")) +
+                                    (sender instanceof BlockCommandSender ? 0.5 : 0) :
                             parseDouble(args[1]),
                     args[2].startsWith("~") ?
-                            source.getLocation().getY() + parseDouble(args[2].replace("~", "")) :
+                            sourceLocation.getY() + parseDouble(args[2].replace("~", "")) +
+                                    (sender instanceof BlockCommandSender ? 0.5 : 0) :
                             parseDouble(args[2]),
                     args[3].startsWith("~") ?
-                            source.getLocation().getZ() + parseDouble(args[3].replace("~", "")) :
-                            parseDouble(args[3]));
+                            sourceLocation.getZ() + parseDouble(args[3].replace("~", "")) +
+                                    (sender instanceof BlockCommandSender ? 0.5 : 0) :
+                            parseDouble(args[3]),
+                    sourceLocation.getYaw(),
+                    sourceLocation.getPitch());
 
-            source.teleport(targetLocation);
-            source.setVelocity(targetVelocity);
+            target.teleport(targetLocation);
+            target.setVelocity(targetVelocity);
 
-            if (!sender.equals(source)) {
-                sender.sendMessage(ChatColor.GREEN + "Teleported " + source.getName() + " to " +
+            if (!sender.equals(target)) {
+                sender.sendMessage(ChatColor.GREEN + "Teleported " + target.getName() + " to " +
+                        targetLocation.getX() + ", " +
+                        targetLocation.getY() + ", " +
+                        targetLocation.getZ() + ".");
+            } else {
+                target.sendMessage(ChatColor.GOLD + "You were teleported to " +
                         targetLocation.getX() + ", " +
                         targetLocation.getY() + ", " +
                         targetLocation.getZ() + ".");
             }
-            source.sendMessage(ChatColor.GOLD + "You were teleported to " + source.getName() + " to " +
-                    targetLocation.getX() + ", " +
-                    targetLocation.getY() + ", " +
-                    targetLocation.getZ() + ".");
-
         }
 
         if (args.length == 5) {
+
+            //TODO @p selector support for targetWorlds
 
             Player source;
 
@@ -187,10 +238,19 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
                 source = Bukkit.getPlayer(args[0]);
             }
 
+            if (    (!isDouble(args[2]) && !args[2].startsWith("~")) ||
+                    (!isDouble(args[3]) && !args[3].startsWith("~")) ||
+                    (!isDouble(args[4]) && !args[4].startsWith("~"))) {
+                sender.sendMessage(ChatColor.RED + "Please provide valid coordinates.");
+                return false;
+            }
+
             if (Bukkit.getWorld(args[1]) == null) {
                 sender.sendMessage(ChatColor.RED + "Could not find the target world.");
                 return false;
             }
+
+            Location sourceLocation = source.getLocation();
 
             World targetWorld = Bukkit.getWorld(args[1]);
 
@@ -206,7 +266,9 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
                             parseDouble(args[3]),
                     args[4].startsWith("~") ?
                             source.getLocation().getZ() + parseDouble(args[4].replace("~", "")) :
-                            parseDouble(args[4]));
+                            parseDouble(args[4]),
+                    sourceLocation.getYaw(),
+                    sourceLocation.getPitch());
 
             source.teleport(targetLocation);
             source.setVelocity(targetVelocity);
