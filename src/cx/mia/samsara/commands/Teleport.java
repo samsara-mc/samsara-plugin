@@ -129,12 +129,6 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
 
         if (args.length == 4) {
 
-
-            if (Bukkit.getPlayer(args[0]) == null && !args[0].equals("@p")) {
-                sender.sendMessage(ChatColor.RED + "Could not find target.");
-                return false;
-            }
-
             if (    (!isDouble(args[1]) && !args[1].startsWith("~")) ||
                     (!isDouble(args[2]) && !args[2].startsWith("~")) ||
                     (!isDouble(args[3]) && !args[3].startsWith("~"))) {
@@ -144,21 +138,20 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
 
             Location sourceLocation = null;
 
-            Player target;
+            Player target = null;
 
-            if (sender instanceof BlockCommandSender) {
-                BlockCommandSender source = (BlockCommandSender) sender;
-                sourceLocation = source.getBlock().getLocation();
-            } else if (sender instanceof Entity) {
-                Entity source = (Entity) sender;
-                sourceLocation = source.getLocation();
-            }
+            if (args[0].equals("@p")) {
 
-            if (!args[0].equals("@p")) {
-                target = Bukkit.getPlayer(args[0]);
-            }
-
-            if (args[0].equals("@p") && sourceLocation != null) {
+                if (sender instanceof BlockCommandSender) {
+                    BlockCommandSender source = (BlockCommandSender) sender;
+                    sourceLocation = source.getBlock().getLocation();
+                } else if (sender instanceof Entity) {
+                    Entity source = (Entity) sender;
+                    sourceLocation = source.getLocation();
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You must have a location to use this selector.");
+                    return false;
+                }
 
                 target = null;
                 double lastDistance = Double.MAX_VALUE;
@@ -171,7 +164,12 @@ public class Teleport extends ModuleCommandExecutor implements TabCompleter {
                     }
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You must have a location to use this selector.");
+                target = Bukkit.getPlayer(args[0]);
+                sourceLocation = target.getLocation();
+            }
+
+            if (target == null) {
+                sender.sendMessage(ChatColor.RED + "Could not find target.");
                 return false;
             }
 
