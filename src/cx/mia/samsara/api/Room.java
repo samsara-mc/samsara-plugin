@@ -22,9 +22,7 @@ public class Room implements Listener {
      * A Room is a defined space within a minecraft world that will play sounds while the player resides within them.
      *
      * @param name   name of the room
-     * @param c1     first corner of the room (cuboid)
-     * @param c2     second corner of the room (cuboid)
-     * @param sounds a list of sounds sound associated with this room (these will play when entering the room, see {@link RoomEnterListener})
+     * @param sounds a list of sounds sound associated with this room (these will play when entering the room)
      */
     public Room(final String name, final Location cornerA, final Location cornerB, final List<Sound> sounds) {
         this.name = name;
