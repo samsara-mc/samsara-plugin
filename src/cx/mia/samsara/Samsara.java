@@ -1,6 +1,8 @@
 package cx.mia.samsara;
 
-import cx.mia.samsara.rooms.life.Home;
+import cx.mia.samsara.api.JoinQuitListener;
+import cx.mia.samsara.api.Room;
+import cx.mia.samsara.api.Sound;
 import cx.moda.moda.module.Module;
 import cx.mia.samsara.storage.SamsaraStorageHandler;
 import cx.moda.moda.module.command.ModuleCommandBuilder;
@@ -11,7 +13,11 @@ import org.bukkit.command.CommandExecutor;
 
 public class Samsara extends Module<SamsaraStorageHandler> {
 
+    private static Samsara instance;
 
+    public Samsara() {
+        instance = this;
+    }
 
     @Override
     public String getName() {
@@ -21,26 +27,51 @@ public class Samsara extends Module<SamsaraStorageHandler> {
     @Override
     public void onEnable() {
 
-        World mainWorld = Bukkit.getWorld("worlds/sid");
+        // register all rooms
+        registerRooms(Bukkit.getWorld("worlds/sid"));
+        registerListener(new JoinQuitListener());
 
-        /**
-         * debug command for listing world names
-         */
         CommandExecutor executor = (sender, command, label, args) -> {
             if (!sender.hasPermission("samsara.listworlds")) return false;
 
-            Bukkit.getWorlds().forEach(world -> {
-                sender.sendMessage(world.getName());
-            });
+            Bukkit.getWorlds().forEach(world -> sender.sendMessage(world.getName()));
             return true;
         };
 
-        new ModuleCommandBuilder("listworlds").withExecutor(executor).withPermission("samsara.listworlds").withAliases("world", "worlds").register(this);
-
-        Home home = new Home(this, new Location(mainWorld, 700, 63, 541), new Location(mainWorld, 714, 78, 551));
-
+        new ModuleCommandBuilder("listworlds")
+                .withExecutor(executor)
+                .withPermission("samsara.listworlds")
+                .withAliases("world", "worlds")
+                .register(this);
     }
 
+    /**
+     * regsiters all rooms
+     *
+     * @param world the world to look for locations of the rooms in.
+     */
+    private void registerRooms(World world) {
 
+        registerListener(
+                new Room(
+                        "home",
+                        new Location(world, 700, 63, 542),
+                        new Location(world, 714, 78, 551),
+                        Sound.LIFE_INFANCY
+                )
+        );
 
+        registerListener(
+                new Room(
+                        "farm",
+                        new Location(world, 747, 60, 615),
+                        new Location(world, 604, 96, 468),
+                        Sound.LIFE_INFANCY2
+                )
+        );
+    }
+
+    public static Samsara getInstance() {
+        return instance;
+    }
 }
