@@ -55,7 +55,7 @@ public class Samsara extends Module<SamsaraStorageHandler> {
         registerListener(
                 new Room(
                         "start room",
-                        new Location(world, 270, 172, 84),
+                        new Location(world, 273, 172, 84),
                         new Location(world, 176, 221, -12),
                         Sound.GENESIS_INCEPTION2
                 )
@@ -73,7 +73,7 @@ public class Samsara extends Module<SamsaraStorageHandler> {
         registerListener(
                 new Room(
                         "mirror room",
-                        new Location(world, 263, 186, 82),
+                        new Location(world, 270, 186, 84),
                         new Location(world, 249, 180, 74),
                         Sound.GENESIS_INCEPTION
                 )
