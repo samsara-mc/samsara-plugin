@@ -124,18 +124,19 @@ public class Samsara extends Module<SamsaraStorageHandler> {
                         "home",
                         new Location(WORLD, 700, 63, 542),
                         new Location(WORLD, 714, 78, 551),
-                        List.of(Sound.LIFE_INFANCY)
+                        List.of(Sound.LIFE)
                 ),
                 new Room(
                         "farm",
                         new Location(WORLD, 747, 60, 615),
-                        new Location(WORLD, 604, 96, 468),
-                        List.of(Sound.LIFE_INFANCY2)
+                        new Location(WORLD, 604, 128, 468),
+                        List.of(Sound.LIFE2)
                 ),
         };
     }
 
-        /**
+
+    /**
      * register all commands
      */
     private void registerCommands() {
