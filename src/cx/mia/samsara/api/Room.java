@@ -10,6 +10,13 @@ import org.bukkit.event.Listener;
 import cx.mia.samsara.Samsara;
 import xyz.derkades.derkutils.bukkit.LocationUtils;
 
+/* TODO
+- INTRO SOUND (een sound met een fadeIn die een kamer altijd speelt als je er nieuw inkomt (4 maten oid)
+- Een selectie korte soundbytes van 4 maten waar de plugin random selectie tussen maakt (minus de intro sound of course)
+- als je de kamer verlaat, niet stoppen met het geluid afspelen maar gewoon de soundbyte laten aflopen, en queued task vervangen met een
+- OUTRO SOUND, een sound met een fadeOut van 4 maten zodat de muziek een soort van "crossfade" heeft met de sountrack van de nieuwe room
+ */
+
 public class Room implements Listener {
 
     private final String name;
